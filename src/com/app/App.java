@@ -18,40 +18,30 @@ public class App {
 	}
 	
 	private static void preparerGateau(Integer num) {
-		preparationExecutors.execute(() -> {
-			System.out.println("Gateau "+num+" en cours de préparation");
-			try {
-				TimeUnit.MILLISECONDS.sleep(2000);
-				cuireGateau(num);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+		preparationExecutors.execute(() -> { 
+			printEach(num, "Gateau "+num+" en cours de préparation", 2000);
+			cuireGateau(num);
 		});
 	}
 	
 	private static void cuireGateau(Integer num) {
 		cuissonExecutors.execute(() -> {
-			System.out.println("Gateau "+num+" en cours de cuisson");
-			try {
-				TimeUnit.MILLISECONDS.sleep(3000);
-				embalerGateau(num);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
+			printEach(num, "Gateau "+num+" en cours de cuisson", 3000);
+			embalerGateau(num);
 		});
 	}
-
 	
 	private static void embalerGateau(Integer num) {
-		embalageExecutors.execute(() -> {
-			System.out.println("Gateau "+num+" en cours de d’emballage");
-			try {
-				TimeUnit.MILLISECONDS.sleep(1000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		});
+		embalageExecutors.execute(() -> printEach(num, "Gateau "+num+" en cours de d’emballage", 3000));
 	}
 
+	private static void printEach(Integer num, String message, Integer sleepTime) {
+		System.out.println(message);
+		try {
+			TimeUnit.MILLISECONDS.sleep(sleepTime);
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
